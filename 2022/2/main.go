@@ -8,36 +8,42 @@ import (
 	"strings"
 )
 
-var movePtsMap = map[string]int{
-	"A": 1,
-	"B": 2,
-	"C": 3,
-	"X": 1,
-	"Y": 2,
-	"Z": 3,
+type Hand struct {
+	points int
+	beats  string
 }
 
-var ptsWinMap = map[int]int{
-	1: 3,
-	2: 1,
-	3: 2,
+var handMap = map[string]Hand{
+	"A": {points: 1, beats: "Z"},
+	"B": {points: 2, beats: "X"},
+	"C": {points: 3, beats: "Y"},
+	"X": {points: 1, beats: "C"},
+	"Y": {points: 2, beats: "A"},
+	"Z": {points: 3, beats: "B"},
 }
 
-func playRound(opponent string, you string) int {
-	// TODO: return error for unknown cmd
+func roundPoints(opponent string, player string) (int, error) {
+	opponentHand, found := handMap[opponent]
 
-	opponentPts := movePtsMap[opponent]
-	yourPts := movePtsMap[you]
-
-	if ptsWinMap[yourPts] == opponentPts {
-		return 6 + yourPts
+	if !found {
+		return 0, errors.New(fmt.Sprintf("Unknown opponent hand: %s", opponent))
 	}
 
-	if ptsWinMap[opponentPts] == yourPts {
-		return 0 + yourPts
+	playerHand, found := handMap[player]
+
+	if !found {
+		return 0, errors.New(fmt.Sprintf("Unknown player hand: %s", player))
 	}
 
-	return 3 + yourPts
+	if playerHand.beats == opponent {
+		return (playerHand.points + 6), nil
+	}
+
+	if opponentHand.beats == player {
+		return playerHand.points, nil
+	}
+
+	return (playerHand.points + 3), nil
 }
 
 func firstPuzzle() (int, error) {
@@ -56,10 +62,15 @@ func firstPuzzle() (int, error) {
 		slice := strings.Split(scanner.Text(), " ")
 
 		if len(slice) != 2 {
-			return 0, errors.New("Line is not of length 2")
+			return 0, errors.New(fmt.Sprintf("Slice is not of length 2: length %d", len(slice)))
 		}
 
-		pts := playRound(slice[0], slice[1])
+		pts, err := roundPoints(slice[0], slice[1])
+
+		if err != nil {
+			return 0, err
+		}
+
 		sum += pts
 	}
 
