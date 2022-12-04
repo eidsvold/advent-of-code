@@ -1,10 +1,9 @@
-package main
+package puzzle
 
 import (
-	"bufio"
-	"errors"
+	"advent-of-code/2022/2/pkg/utils"
+
 	"fmt"
-	"os"
 	"strings"
 )
 
@@ -22,17 +21,17 @@ var handMap = map[string]Hand{
 	"Z": {points: 3, beats: "B"},
 }
 
-func roundPoints(opponent string, player string) (int, error) {
+func playHand(opponent string, player string) (int, error) {
 	opponentHand, found := handMap[opponent]
 
 	if !found {
-		return 0, errors.New(fmt.Sprintf("Unknown opponent hand: %s", opponent))
+		return 0, fmt.Errorf("unknown opponent hand: %s", opponent)
 	}
 
 	playerHand, found := handMap[player]
 
 	if !found {
-		return 0, errors.New(fmt.Sprintf("Unknown player hand: %s", player))
+		return 0, fmt.Errorf("unknown player hand: %s", player)
 	}
 
 	if playerHand.beats == opponent {
@@ -46,15 +45,12 @@ func roundPoints(opponent string, player string) (int, error) {
 	return (playerHand.points + 3), nil
 }
 
-func firstPuzzle() (int, error) {
-	file, err := os.Open("input.txt")
+func SolveFirstPuzzle() (int, error) {
+	scanner, err := utils.NewScanner("assets/input.txt")
 
 	if err != nil {
 		return 0, err
 	}
-
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
 
 	sum := 0
 
@@ -62,10 +58,10 @@ func firstPuzzle() (int, error) {
 		slice := strings.Split(scanner.Text(), " ")
 
 		if len(slice) != 2 {
-			return 0, errors.New(fmt.Sprintf("Slice is not of length 2: length %d", len(slice)))
+			return 0, fmt.Errorf("slice is not of length 2: length %d", len(slice))
 		}
 
-		pts, err := roundPoints(slice[0], slice[1])
+		pts, err := playHand(slice[0], slice[1])
 
 		if err != nil {
 			return 0, err
@@ -75,15 +71,4 @@ func firstPuzzle() (int, error) {
 	}
 
 	return sum, nil
-}
-
-func main() {
-	first, err := firstPuzzle()
-
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	fmt.Println(first)
 }
