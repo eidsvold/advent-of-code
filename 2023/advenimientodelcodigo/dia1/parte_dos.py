@@ -31,7 +31,7 @@ def primer_y_ultimo_digitos(texto: str) -> int:
     return int(primer + ultimo)
 
 
-def resumir_digitos(camino_al_input: str) -> List[str]:
+def resumir_digitos(camino_al_input: str) -> int:
     suma = 0
 
     with open(camino_al_input) as archivo:
