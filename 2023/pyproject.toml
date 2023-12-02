@@ -1,0 +1,13 @@
+[build-system]
+requires = ["hatchling >= 1.18.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "advenimiento-del-codigo-2023"
+version = "0.0.1"
+description = ""
+authors = [
+    { name = "Hans Erling Eidsvold", email = "hans.erling@hotmail.com" },
+]
+requires-python = ">= 3.9"
+dependencies = []
