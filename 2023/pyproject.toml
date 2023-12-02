@@ -5,9 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "advenimiento-del-codigo-2023"
 version = "0.0.1"
-description = ""
+description = "El Advenimiento del Código 2023"
 authors = [
     { name = "Hans Erling Eidsvold", email = "hans.erling@hotmail.com" },
 ]
-requires-python = ">= 3.9"
+requires-python = ">= 3.8"
 dependencies = []
