@@ -8,5 +8,7 @@
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll"]
   },
-  "black-formatter.logLevel": "warn"
+  "black-formatter.logLevel": "warn",
+  "cSpell.language": "es,en",
+  "cSpell.diagnosticLevel": "Hint",
 }
